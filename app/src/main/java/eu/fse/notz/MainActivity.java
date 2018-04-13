@@ -10,7 +10,8 @@ public class MainActivity extends Activity{
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] myDataset={"Nota1","Nota2","Nota3","Nota4"};
+
+    private String[] myDataset = {"Nota1", "Nota2", "Nota3", "Nota4"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
