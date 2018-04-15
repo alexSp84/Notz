@@ -2,27 +2,45 @@ package eu.fse.notz;
 
 public class Note {
 
-    private String titleTxt;
-    private String contentTxt;
+    private String title;
+    private String description;
+    private int id;
+    private boolean isShowOnTop;
 
-    public Note(String titleTxt, String contentTxt) {
-        this.titleTxt = titleTxt;
-        this.contentTxt = contentTxt;
+   public Note(String title, String description){
+       this.title = title;
+       this.description = description;
+   }
+
+    public String getTitle() {
+        return title;
     }
 
-    public String getTitleTxt() {
-        return titleTxt;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getContentTxt() {
-        return contentTxt;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTitleTxt(String titleTxt) {
-        this.titleTxt = titleTxt;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setContentTxt(String contentTxt) {
-        this.contentTxt = contentTxt;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isShowOnTop() {
+        return isShowOnTop;
+    }
+
+    public void setShowOnTop(boolean showOnTop) {
+        isShowOnTop = showOnTop;
     }
 }
