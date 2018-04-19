@@ -35,6 +35,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         mDataset = myDataset;
     }
 
+    public void addNote(Note note){
+        mDataset.add(note);
+        notifyDataSetChanged();
+        // notifyItemInserted();
+    }
+
     @Override
     public NotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.row_note, parent, false);
