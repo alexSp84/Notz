@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity{
         mRecyclerView.setHasFixedSize(true);
 
         // mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager = new GridLayoutManager(this, 2);
+        // mLayoutManager = new GridLayoutManager(this, 2);
+
+        mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         myDataset = new ArrayList<>();
