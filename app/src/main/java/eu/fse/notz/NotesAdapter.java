@@ -35,10 +35,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         mDataset = myDataset;
     }
 
-    public void addNote(Note note){
-        mDataset.add(note);
-        notifyDataSetChanged();
-        // notifyItemInserted();
+    public void addNote(Note note, int position){
+        this.mDataset.add(position, note);
+        notifyItemInserted(position);
+
     }
 
     @Override
