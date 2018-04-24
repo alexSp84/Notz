@@ -1,5 +1,7 @@
 package eu.fse.notz;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +15,9 @@ import java.util.Random;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
     private ArrayList<Note> mDataset;
+    private Context context;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView titleTextV;
         public TextView descriptionTextV;
         public CardView cardView;
@@ -28,11 +31,37 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             Random random = new Random();
             int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
             cardView.setBackgroundColor(color);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String title = mDataset.get(getAdapterPosition()).getTitle();
+                    String description = mDataset.get(getAdapterPosition()).getDescription();
+
+                    Intent openNote = new Intent(context,NoteActivity.class);
+                    openNote.putExtra("sendTitle", title);
+                    openNote.putExtra("sendDescription", description);
+                    openNote.putExtra("position", getAdapterPosition());
+                    ((MainActivity)context).startActivityForResult(openNote, MainActivity.EDIT_REQUEST);
+                }
+            });
+
         }
     }
 
-    public NotesAdapter(ArrayList<Note> myDataset) {
+    public NotesAdapter(ArrayList<Note> myDataset, Context context) {
         mDataset = myDataset;
+        this.context = context;
+    }
+
+    public Note getNote(int index) {
+        return mDataset.get(index);
+    }
+
+    public void updateNote(int index,Note note){
+        mDataset.set(index,note);
+        notifyItemChanged(index);
     }
 
     public void addNote(Note note, int position){

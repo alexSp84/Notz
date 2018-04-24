@@ -1,7 +1,9 @@
 package eu.fse.notz;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int EDIT_REQUEST = 1001;
     private RecyclerView mRecyclerView;
     private NotesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         myDataset = new ArrayList<>();
 
-        mAdapter = new NotesAdapter(myDataset);
+        mAdapter = new NotesAdapter(myDataset, this);
         mRecyclerView.setAdapter(mAdapter);
 
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +52,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == EDIT_REQUEST){
+
+            if(resultCode == Activity.RESULT_OK){
+
+                int editedNotePosition = data.getIntExtra("position",-1);
+                Note note = mAdapter.getNote(editedNotePosition);
+
+
+                note.setTitle(data.getStringExtra("title"));
+                note.setDescription(data.getStringExtra("description"));
+
+                mAdapter.updateNote(editedNotePosition,note);
+
+            }
+        }
     }
 
     private void showDialog() {
