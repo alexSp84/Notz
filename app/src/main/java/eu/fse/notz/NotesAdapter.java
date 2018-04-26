@@ -64,10 +64,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         notifyItemChanged(index);
     }
 
+    public void updateNote(int index, String title, String description){
+        Note note = mDataset.get(index);
+        note.setTitle(title);
+        note.setDescription(description);
+        notifyItemChanged(index);
+    }
+
     public void addNote(Note note, int position){
         this.mDataset.add(position, note);
         notifyItemInserted(position);
 
+    }
+
+    public void deleteNote(int index){
+        mDataset.remove(index);
+        notifyItemRemoved(index);
     }
 
     @Override

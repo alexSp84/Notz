@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     public static final int EDIT_REQUEST = 1001;
+    public static final int RESULT_DELETE = 2002;
     private RecyclerView mRecyclerView;
     private NotesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -63,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
 
                 int editedNotePosition = data.getIntExtra("position",-1);
-                Note note = mAdapter.getNote(editedNotePosition);
 
 
-                note.setTitle(data.getStringExtra("title"));
-                note.setDescription(data.getStringExtra("description"));
+                mAdapter.updateNote(editedNotePosition, data.getStringExtra("title"),
+                        data.getStringExtra("description"));
 
-                mAdapter.updateNote(editedNotePosition,note);
+            }
 
+            if(resultCode == RESULT_DELETE){
+                int editedNotePosition = data.getIntExtra("position",-1);
+                mAdapter.deleteNote(editedNotePosition);
             }
         }
     }

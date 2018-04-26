@@ -13,6 +13,7 @@ public class NoteActivity extends AppCompatActivity {
     EditText titleEdTxt;
     EditText descriptionEdTxt;
     Button confirmBtn;
+    Button deleteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class NoteActivity extends AppCompatActivity {
         titleEdTxt = (EditText) findViewById(R.id.title_note_et);
         descriptionEdTxt = (EditText) findViewById(R.id.description__note_et);
         confirmBtn = (Button) findViewById(R.id.edit_confirm);
+        deleteBtn = (Button) findViewById(R.id.edit_delete);
 
         final Intent receivedNote = getIntent();
         String title = receivedNote.getStringExtra("sendTitle");
@@ -43,6 +45,20 @@ public class NoteActivity extends AppCompatActivity {
                 returnIntent.putExtra("description", editedDescription);
                 returnIntent.putExtra("position",position);
                 setResult(Activity.RESULT_OK,returnIntent);
+
+                finish();
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int position = receivedNote.getIntExtra("position",-1);
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("position",position);
+                setResult(MainActivity.RESULT_DELETE, returnIntent);
 
                 finish();
             }
