@@ -77,6 +77,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     }
 
+    public void addNotesList(ArrayList<Note> notes){
+        mDataset.addAll(notes);
+        notifyDataSetChanged();
+    }
+
     public void deleteNote(int index){
         mDataset.remove(index);
         notifyItemRemoved(index);
