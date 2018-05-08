@@ -5,4 +5,6 @@
     <string name="dialog_negative_button">Annulla</string>
     <string name="ok">OK</string>
     <string name="delete">Elimina</string>
+    <string name="note_removed">Puoi ancora annullare l\'eliminazione della nota</string>
+    <string name="cancel">Annulla</string>
 </resources>

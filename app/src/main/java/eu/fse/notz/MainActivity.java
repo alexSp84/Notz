@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == EDIT_REQUEST){
@@ -72,8 +73,21 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if(resultCode == RESULT_DELETE){
-                int editedNotePosition = data.getIntExtra("position",-1);
+                final int editedNotePosition = data.getIntExtra("position",-1);
                 mAdapter.deleteNote(editedNotePosition);
+
+                Snackbar.make(mRecyclerView,getString(R.string.note_removed), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.cancel, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                Note note = new Note(data.getStringExtra("title"),
+                                        data.getStringExtra("description"));
+
+                                mAdapter.addNote(note, editedNotePosition);
+                            }
+                        })
+                        .show();
             }
         }
     }
