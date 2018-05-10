@@ -14,19 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private NotesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionButton actionButton;
+    private TextView noItem;
 
 
     private ArrayList<Note> myDataset;
@@ -54,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         actionButton = findViewById(R.id.action_btn);
+        noItem = findViewById(R.id.no_item);
+
 
         myDataset = new ArrayList<>();
 
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void showDialog() {
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
@@ -139,6 +141,15 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.show();
     }
 
+    private void setNoItemText(){
+
+        if(myDataset.isEmpty())
+            noItem.setText(R.string.NoItem);
+        else
+            noItem.setText(R.string.empty);
+    }
+
+
     private void getNoteFromURL(){
         // Make HTTP call
 
@@ -147,24 +158,32 @@ public class MainActivity extends AppCompatActivity {
         String url ="http://5af1bf8530f9490014ead894.mockapi.io/api/v1/notes";
 
         // Request a string response from the provided URL.
-        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                    Log.d("jsonRequest", response.toString());
+                    public void onResponse(JSONObject response) {
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                        Log.d("jsonRequest", response.toString());
 
-                        ArrayList<Note> noteListFromResponse = Note.getNotesList(response);
-                        mAdapter.addNotesList(noteListFromResponse);
+                        try {
+                            JSONArray result = response.getJSONArray("data");
+                            ArrayList<Note> noteListFromResponse = Note.getNotesList(result);
+                            mAdapter.addNotesList(noteListFromResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("jsonRequest", error.getMessage());
-                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+                Toast.makeText(MainActivity.this, "Si è verificato un errore: "+error.networkResponse.statusCode, Toast.LENGTH_LONG).show();
             }
         });
 
         // Add the request to the RequestQueue.
         queue.add(jsonRequest);
     }
+
 }

@@ -7,4 +7,6 @@
     <string name="delete">Elimina</string>
     <string name="note_removed">Puoi ancora annullare l\'eliminazione della nota</string>
     <string name="cancel">Annulla</string>
+    <string name="NoItem">Nessun Elemento</string>
+    <string name="empty" />
 </resources>

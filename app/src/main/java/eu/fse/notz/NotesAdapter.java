@@ -87,6 +87,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         notifyItemRemoved(index);
     }
 
+
+
     @Override
     public NotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.row_note, parent, false);

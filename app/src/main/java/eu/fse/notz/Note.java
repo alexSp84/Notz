@@ -20,22 +20,22 @@ public class Note {
        this.description = description;
    }
 
-   public static ArrayList<Note> getNotesList(JSONArray notes){
+    public static ArrayList<Note> getNotesList(JSONArray notes){
 
-       ArrayList<Note> list = new ArrayList<>();
+        ArrayList<Note> list = new ArrayList<>();
 
-       for (int i = 0; i < notes.length(); i++){
+        for (int i = 0; i < notes.length(); i++){
 
-           try {
-               JSONObject jsonNote = notes.getJSONObject(i);
-               list.add(new Note(jsonNote));
+            try {
+                JSONObject jsonNote = notes.getJSONObject(i);
+                list.add(new Note(jsonNote));
 
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-       }
-       return list;
-   }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 
    public Note(JSONObject jsonNote){
        try {
