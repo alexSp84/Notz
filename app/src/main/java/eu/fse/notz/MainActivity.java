@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
 
         myDataset = new ArrayList<>();
 
+        if(getIntent() != null){
+
+            Intent intent = getIntent();
+            if(intent.getAction().equals(Intent.ACTION_SEND)){
+                String title = intent.getStringExtra(Intent.EXTRA_TEXT);
+                showDialog(title);
+
+            }
+        }
+
         getNoteFromURL();
 
         mAdapter = new NotesAdapter(myDataset, this);
@@ -108,8 +118,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showDialog(){
+        showDialog(null);
+    }
 
-    private void showDialog() {
+    private void showDialog(String title) {
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         View dialogView = (View) LayoutInflater.from(this).inflate(R.layout.dialog_note, null);
@@ -118,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText titleEdTxt = (EditText) dialogView.findViewById(R.id.title_et);
         final EditText descriptionEdTxt = (EditText) dialogView.findViewById(R.id.description_et);
+
+        if(title!= null) titleEdTxt.setText(title);
 
         alertBuilder.setPositiveButton(R.string.dialog_positive_button, new DialogInterface.OnClickListener() {
             @Override
