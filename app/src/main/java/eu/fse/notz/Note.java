@@ -12,6 +12,8 @@ public class Note {
        this.description = description;
    }
 
+    public Note(){}
+
     public String getTitle() {
         return title;
     }

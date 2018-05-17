@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<Note> myDataset;
+    private DatabaseHandler notzDatabase = new DatabaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         actionButton = findViewById(R.id.action_btn);
 
         myDataset = new ArrayList<>();
+
+        myDataset = notzDatabase.getAllNotes();
 
         mAdapter = new NotesAdapter(myDataset, this);
         mRecyclerView.setAdapter(mAdapter);
@@ -70,10 +73,14 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter.updateNote(editedNotePosition, data.getStringExtra("title"),
                         data.getStringExtra("description"));
 
+                notzDatabase.updateNote(mAdapter.getNote(editedNotePosition));
+
             }
 
             if(resultCode == RESULT_DELETE){
                 final int editedNotePosition = data.getIntExtra("position",-1);
+                notzDatabase.deleteNote(mAdapter.getNote(editedNotePosition));
+
                 mAdapter.deleteNote(editedNotePosition);
 
                 Snackbar.make(mRecyclerView,getString(R.string.note_removed), Snackbar.LENGTH_LONG)
@@ -85,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                         data.getStringExtra("description"));
 
                                 mAdapter.addNote(note, editedNotePosition);
+                                notzDatabase.addNote(note);
                             }
                         })
                         .show();
@@ -110,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Note note = new Note(insertedTitle, insertedDescription);
                 mAdapter.addNote(note, 0);
+
+                notzDatabase.addNote(note);
             }
         });
 
