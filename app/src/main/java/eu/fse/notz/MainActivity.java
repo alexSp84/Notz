@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 mAdapter.updateNote(editedNotePosition, data.getStringExtra("title"),
-                        data.getStringExtra("description"));
+                        data.getStringExtra("description"), data.getBooleanExtra("showOnTop", false));
 
                 notzDatabase.updateNote(mAdapter.getNote(editedNotePosition));
 

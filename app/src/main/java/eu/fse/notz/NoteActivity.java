@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class NoteActivity extends AppCompatActivity {
@@ -17,9 +18,11 @@ public class NoteActivity extends AppCompatActivity {
     EditText descriptionEdTxt;
     Button confirmBtn;
     Button deleteBtn;
+    CheckBox checkBox;
 
     Intent receivedNote;
     String title, description;
+    boolean checked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +33,16 @@ public class NoteActivity extends AppCompatActivity {
         descriptionEdTxt = (EditText) findViewById(R.id.description__note_et);
         confirmBtn = (Button) findViewById(R.id.edit_confirm);
         deleteBtn = (Button) findViewById(R.id.edit_delete);
+        checkBox = (CheckBox) findViewById(R.id.check_box_favorite);
 
         receivedNote = getIntent();
         title = receivedNote.getStringExtra("sendTitle");
         description = receivedNote.getStringExtra("sendDescription");
+        checked = receivedNote.getBooleanExtra("showOnTop", false);
 
         titleEdTxt.setText(title);
         descriptionEdTxt.setText(description);
+        checkBox.setChecked(checked);
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,10 +52,13 @@ public class NoteActivity extends AppCompatActivity {
                 String editedDescription = descriptionEdTxt.getText().toString();
                 int position = receivedNote.getIntExtra("position",-1);
 
+                checked = checkBox.isChecked();
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("title", editedTitle);
                 returnIntent.putExtra("description", editedDescription);
                 returnIntent.putExtra("position",position);
+                returnIntent.putExtra("showOnTop", checked);
                 setResult(Activity.RESULT_OK,returnIntent);
 
                 finish();

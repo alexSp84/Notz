@@ -45,4 +45,6 @@ public class Note {
     public void setShowOnTop(boolean showOnTop) {
         isShowOnTop = showOnTop;
     }
+
+
 }

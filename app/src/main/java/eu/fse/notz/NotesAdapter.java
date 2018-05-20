@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,12 +23,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         public TextView titleTextV;
         public TextView descriptionTextV;
         public CardView cardView;
+        public ImageView favourite;
 
         public ViewHolder(View v) {
             super(v);
             cardView = (CardView)itemView.findViewById(R.id.cv);
             titleTextV = (TextView)itemView.findViewById(R.id.title_tv);
             descriptionTextV = (TextView)itemView.findViewById((R.id.text_tv));
+            favourite = (ImageView) itemView.findViewById(R.id.pin_favorite);
 
             Random random = new Random();
             int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
@@ -38,11 +42,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
                     String title = mDataset.get(getAdapterPosition()).getTitle();
                     String description = mDataset.get(getAdapterPosition()).getDescription();
+                    boolean showOnTop = mDataset.get(getAdapterPosition()).isShowOnTop() ;
 
                     Intent openNote = new Intent(context,NoteActivity.class);
                     openNote.putExtra("sendTitle", title);
                     openNote.putExtra("sendDescription", description);
                     openNote.putExtra("position", getAdapterPosition());
+                    openNote.putExtra("showOnTop", showOnTop);
                     ((MainActivity)context).startActivityForResult(openNote, MainActivity.EDIT_REQUEST);
                 }
             });
@@ -64,11 +70,26 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         notifyItemChanged(index);
     }
 
-    public void updateNote(int index, String title, String description){
+    public void updateNote(int index, String title, String description, boolean showOnTop){
         Note note = mDataset.get(index);
         note.setTitle(title);
         note.setDescription(description);
+
+        if(showOnTop){
+            mDataset.remove(index);
+            moveOnTop(note);
+
+            notifyDataSetChanged();
+            return;
+        }
+
+        note.setShowOnTop(false);
         notifyItemChanged(index);
+    }
+
+    public void moveOnTop(Note note){
+        note.setShowOnTop(true);
+        mDataset.add(0, note);
     }
 
     public void addNote(Note note, int position){
@@ -93,6 +114,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
         holder.titleTextV.setText(mDataset.get(position).getTitle());
         holder.descriptionTextV.setText(mDataset.get(position).getDescription());
+        if(mDataset.get(position).isShowOnTop()) holder.favourite.setVisibility(View.VISIBLE);
 
     }
 
